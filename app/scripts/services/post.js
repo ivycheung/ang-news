@@ -69,11 +69,11 @@ app.factory('Post', function ($firebase, FIREBASE_URL, User) {
                     post.$child('downvotes').$remove(user.username);
                     user.$child('downvotes').$remove(postId);
 
-
                     post.$child('score').$transaction(function (score) {
                         if (!score) {
                             return 1;
                         }
+
                         return score + 1;
                     });
                 });
@@ -89,11 +89,11 @@ app.factory('Post', function ($firebase, FIREBASE_URL, User) {
                     post.$child('upvotes').$remove(user.username);
                     user.$child('upvotes').$remove(postId);
 
-
                     post.$child('score').$transaction(function (score) {
                         if (score === undefined || score === null) {
                             return -1;
                         }
+
                         return score - 1;
                     });
                 });
@@ -124,7 +124,7 @@ app.factory('Post', function ($firebase, FIREBASE_URL, User) {
             }
         },
         downVoted: function (post) {
-            if (User.signedIn() && post.upvotes) {
+            if (User.signedIn() && post.downvotes) {
                 return post.downvotes.hasOwnProperty(User.getCurrent().username);
             }
         }
